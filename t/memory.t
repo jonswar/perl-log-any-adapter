@@ -1,6 +1,6 @@
 #!perl
 use Test::More tests => 21;
-use Log::Any::Util qw(cmp_deeply);
+use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
 use warnings;
 
@@ -33,13 +33,15 @@ isa_ok( $Foo::log, 'Log::Any::Adapter::Null', 'Foo::log starts as null' );
 isa_ok( $Bar::log, 'Log::Any::Adapter::Null', 'Foo::log starts as null' );
 isa_ok( $main_log, 'Log::Any::Adapter::Null', 'Foo::log starts as null' );
 
-Log::Any->set_adapter('+Log::Any::Test::Adapter::Memory');
+my $memclass = 'Log::Any::Adapter::Test::Memory';
 
-isa_ok( $Foo::log, 'Log::Any::Test::Adapter::Memory',
+Log::Any->set_adapter("+$memclass");
+
+isa_ok( $Foo::log, $memclass,
     'Foo::log is now memory' );
-isa_ok( $Bar::log, 'Log::Any::Test::Adapter::Memory',
+isa_ok( $Bar::log, $memclass,
     'Bar::log is now memory' );
-isa_ok( $main_log, 'Log::Any::Test::Adapter::Memory',
+isa_ok( $main_log, $memclass,
     'main_log is now memory' );
 ok($Foo::log ne $Bar::log, 'Foo::log and Bar::log are different');
 is($main_log, Log::Any->get_logger(), "memoization - no cat");
