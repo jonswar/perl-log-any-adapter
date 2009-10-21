@@ -1,4 +1,4 @@
-package Log::Any::Test::Adapter::Memory;
+package Log::Any::Adapter::Test::Memory;
 use Log::Any::Util qw(make_method);
 use strict;
 use warnings;
