@@ -1,5 +1,5 @@
 #!perl
-use Test::More tests => 21;
+use Test::More tests => 32;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
 use warnings;
@@ -25,32 +25,46 @@ use warnings;
     }
 }
 
+$Baz::log = Log::Any->get_logger( category => 'Baz' );
 my $main_log = Log::Any->get_logger();
-is($main_log, Log::Any->get_logger(), "memoization - no cat");
-is($main_log, Log::Any->get_logger(category => 'main'), "memoization - cat");
+is( $main_log, Log::Any->get_logger(), "memoization - no cat" );
+is( $main_log, Log::Any->get_logger( category => 'main' ),
+    "memoization - cat" );
 
-isa_ok( $Foo::log, 'Log::Any::Adapter::Null', 'Foo::log starts as null' );
-isa_ok( $Bar::log, 'Log::Any::Adapter::Null', 'Foo::log starts as null' );
-isa_ok( $main_log, 'Log::Any::Adapter::Null', 'Foo::log starts as null' );
+my $memclass  = 'Log::Any::Adapter::Test::Memory';
+my $nullclass = 'Log::Any::Adapter::Null';
 
-my $memclass = 'Log::Any::Adapter::Test::Memory';
+isa_ok( $Foo::log, $nullclass, 'Foo::log' );
+isa_ok( $Bar::log, $nullclass, 'Bar::log' );
+isa_ok( $Baz::log, $nullclass, 'Baz::log' );
+isa_ok( $main_log, $nullclass, 'main_log' );
 
-Log::Any->set_adapter("+$memclass");
+my $entry = Log::Any->set_adapter_for( qr/Foo|Bar/, "+$memclass" );
 
-isa_ok( $Foo::log, $memclass,
-    'Foo::log is now memory' );
-isa_ok( $Bar::log, $memclass,
-    'Bar::log is now memory' );
-isa_ok( $main_log, $memclass,
-    'main_log is now memory' );
-ok($Foo::log ne $Bar::log, 'Foo::log and Bar::log are different');
-is($main_log, Log::Any->get_logger(), "memoization - no cat");
-is($main_log, Log::Any->get_logger(category => 'main'), "memoization - cat");
+isa_ok( $Foo::log, $memclass,  'Foo::log' );
+isa_ok( $Bar::log, $memclass,  'Bar::log' );
+isa_ok( $Baz::log, $nullclass,  'Baz::log' );
+isa_ok( $main_log, $nullclass, 'main_log' );
+
+my $entry2 = Log::Any->set_adapter_for( qr/Baz|main/, "+$memclass");
+
+isa_ok( $Foo::log, $memclass, 'Foo::log' );
+isa_ok( $Bar::log, $memclass, 'Bar::log' );
+isa_ok( $Baz::log, $memclass, 'Baz::log' );
+isa_ok( $main_log, $memclass, 'main_log' );
+
+ok( $Foo::log ne $Bar::log, 'Foo::log and Bar::log are different' );
+is( $main_log, Log::Any->get_logger(), "memoization - no cat" );
+is( $main_log, Log::Any->get_logger( category => 'main' ),
+    "memoization - cat" );
 
 cmp_deeply( $Foo::log->{msgs}, [], 'Foo::log has empty buffer' );
 cmp_deeply( $Bar::log->{msgs}, [], 'Bar::log has empty buffer' );
 cmp_deeply( $main_log->{msgs}, [], 'Bar::log has empty buffer' );
-ok($Foo::log->{msgs} ne $Bar::log->{msgs}, 'Foo::log and Bar::log have different buffers');
+ok(
+    $Foo::log->{msgs} ne $Bar::log->{msgs},
+    'Foo::log and Bar::log have different buffers'
+);
 
 Foo->log_debug('for foo');
 Bar->log_info('for bar');
@@ -72,8 +86,16 @@ cmp_deeply(
     'main log appeared in memory'
 );
 
-Log::Any->set_adapter('Null');
+Log::Any->remove_adapter($entry);
 
-isa_ok( $Foo::log, 'Log::Any::Adapter::Null', 'Foo::log is null again' );
-isa_ok( $Bar::log, 'Log::Any::Adapter::Null', 'Foo::log is null again' );
-isa_ok( $main_log, 'Log::Any::Adapter::Null', 'main_log is null again' );
+isa_ok( $Foo::log, $nullclass,  'Foo::log' );
+isa_ok( $Bar::log, $nullclass,  'Bar::log' );
+isa_ok( $Baz::log, $memclass,  'Baz::log' );
+isa_ok( $main_log, $memclass, 'main_log' );
+
+Log::Any->remove_adapter($entry2);
+
+isa_ok( $Foo::log, $nullclass,  'Foo::log' );
+isa_ok( $Bar::log, $nullclass,  'Bar::log' );
+isa_ok( $Baz::log, $nullclass,  'Baz::log' );
+isa_ok( $main_log, $nullclass, 'main_log' );
