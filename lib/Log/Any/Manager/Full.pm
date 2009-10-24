@@ -4,6 +4,7 @@ use warnings;
 use Carp qw(croak);
 use Log::Any::Adapter::Null;
 use Log::Any::Util qw(require_dynamic);
+use Scope::Guard;
 use base qw(Log::Any::Manager::Base);
 
 sub upgrade_to_full { }
@@ -50,18 +51,23 @@ sub _new_adapter_for_entry {
 }
 
 sub set_adapter {
-    my ( $self, $adapter_name, %adapter_params ) = @_;
+    my $self = shift;
+    my $options;
+    if ( ref( $_[0] ) eq 'HASH' ) {
+        $options = shift(@_);
+    }
+    my ( $adapter_name, %adapter_params ) = @_;
 
-    return $self->set_adapter_for( qr/.*/, $adapter_name, %adapter_params );
-}
-
-sub set_adapter_for {
-    my ( $self, $pattern, $adapter_name, %adapter_params ) = @_;
-
-    croak "expected regexp for pattern, got '$pattern'"
-      unless defined($pattern) && ref($pattern) eq 'Regexp';
     croak "expected adapter name"
       unless defined($adapter_name) && $adapter_name =~ /\S/;
+
+    my $pattern = $options->{category};
+    if ( !defined($pattern) ) {
+        $pattern = qr/.*/;
+    }
+    elsif ( !ref($pattern) ) {
+        $pattern = qr/^\Q$pattern\E$/;
+    }
 
     $adapter_name =~ s/^Log:://;    # Log::Dispatch -> Dispatch, etc.
     my $adapter_class = (
@@ -75,6 +81,10 @@ sub set_adapter_for {
     unshift( @{ $self->{entries} }, $entry );
 
     $self->reselect_matching_adapters($pattern);
+
+    if ( my $lex_ref = $options->{lexically} ) {
+        $$lex_ref = Scope::Guard->new( sub { $self->remove_adapter($entry) } );
+    }
 
     return $entry;
 }

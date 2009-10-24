@@ -1,5 +1,5 @@
 #!perl
-use Test::More tests => 32;
+use Test::More tests => 34;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
 use warnings;
@@ -34,24 +34,25 @@ is( $main_log, Log::Any->get_logger( category => 'main' ),
 my $memclass  = 'Log::Any::Adapter::Test::Memory';
 my $nullclass = 'Log::Any::Adapter::Null';
 
-isa_ok( $Foo::log, $nullclass, 'Foo::log' );
-isa_ok( $Bar::log, $nullclass, 'Bar::log' );
-isa_ok( $Baz::log, $nullclass, 'Baz::log' );
-isa_ok( $main_log, $nullclass, 'main_log' );
+isa_ok( $Foo::log, $nullclass, 'Foo::log before set' );
+isa_ok( $Bar::log, $nullclass, 'Bar::log before set' );
+isa_ok( $Baz::log, $nullclass, 'Baz::log before set' );
+isa_ok( $main_log, $nullclass, 'main_log before set' );
 
-my $entry = Log::Any->set_adapter_for( qr/Foo|Bar/, "+$memclass" );
+my $entry = Log::Any->set_adapter( { category => qr/Foo|Bar/ }, "+$memclass" );
 
-isa_ok( $Foo::log, $memclass,  'Foo::log' );
-isa_ok( $Bar::log, $memclass,  'Bar::log' );
-isa_ok( $Baz::log, $nullclass,  'Baz::log' );
-isa_ok( $main_log, $nullclass, 'main_log' );
+isa_ok( $Foo::log, $memclass,  'Foo::log after first set' );
+isa_ok( $Bar::log, $memclass,  'Bar::log after first set' );
+isa_ok( $Baz::log, $nullclass, 'Baz::log after first set' );
+isa_ok( $main_log, $nullclass, 'main_log after first set' );
 
-my $entry2 = Log::Any->set_adapter_for( qr/Baz|main/, "+$memclass");
+my $entry2 =
+  Log::Any->set_adapter( { category => qr/Baz|main/ }, "+$memclass" );
 
-isa_ok( $Foo::log, $memclass, 'Foo::log' );
-isa_ok( $Bar::log, $memclass, 'Bar::log' );
-isa_ok( $Baz::log, $memclass, 'Baz::log' );
-isa_ok( $main_log, $memclass, 'main_log' );
+isa_ok( $Foo::log, $memclass, 'Foo::log after second set' );
+isa_ok( $Bar::log, $memclass, 'Bar::log after second set' );
+isa_ok( $Baz::log, $memclass, 'Baz::log after second set' );
+isa_ok( $main_log, $memclass, 'main_log after second set' );
 
 ok( $Foo::log ne $Bar::log, 'Foo::log and Bar::log are different' );
 is( $main_log, Log::Any->get_logger(), "memoization - no cat" );
@@ -88,14 +89,20 @@ cmp_deeply(
 
 Log::Any->remove_adapter($entry);
 
-isa_ok( $Foo::log, $nullclass,  'Foo::log' );
-isa_ok( $Bar::log, $nullclass,  'Bar::log' );
+isa_ok( $Foo::log, $nullclass, 'Foo::log' );
+isa_ok( $Bar::log, $nullclass, 'Bar::log' );
 isa_ok( $Baz::log, $memclass,  'Baz::log' );
-isa_ok( $main_log, $memclass, 'main_log' );
+isa_ok( $main_log, $memclass,  'main_log' );
 
 Log::Any->remove_adapter($entry2);
 
-isa_ok( $Foo::log, $nullclass,  'Foo::log' );
-isa_ok( $Bar::log, $nullclass,  'Bar::log' );
-isa_ok( $Baz::log, $nullclass,  'Baz::log' );
+isa_ok( $Foo::log, $nullclass, 'Foo::log' );
+isa_ok( $Bar::log, $nullclass, 'Bar::log' );
+isa_ok( $Baz::log, $nullclass, 'Baz::log' );
 isa_ok( $main_log, $nullclass, 'main_log' );
+
+{
+    Log::Any->set_adapter( { category => 'Foo', lexically => \my $lex }, "+$memclass" );
+    isa_ok( $Foo::log, $memclass, 'Foo::log in lexical scope' );
+}
+isa_ok( $Foo::log, $nullclass, 'Foo::log outside lexical scope' );
