@@ -4,32 +4,4 @@ Revision history for Log-Any
 
 0.01  Oct 24, 2009
 
-0.01  Oct 24, 2009
-
-0.05  Sep 3, 2009
-
-0.04  Sep 3, 2009
-
-* Fixes
-  - Replace Test::Deep::cmp_deeply with an internal version to avoid Test::Deep dependency
-
-0.03  Jul 17, 2009
-
-* Improvements
-  - Eliminated extra '::Log' from adapter names, e.g. Log::Any::Adapter::Log::Dispatch is
-    now Log::Any::Adapter::Dispatch. The long name was properly descriptive but was making
-    me wince every time.
-
-0.02  Jul 14, 2009
-
-* Fixes
-  - Fix logging aliases like warn => warning
-
-* Implementation
-  - Eliminate unnecessary Test/InternalOnly.pm class
-  - Precompute alias and method lists like Log::Any->logging_methods
-
-0.01  Jul 11, 2009
-
 - Initial version
-
