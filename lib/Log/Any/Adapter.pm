@@ -2,6 +2,18 @@ package Log::Any::Adapter;
 use strict;
 use warnings;
 
+foreach my $method (qw(set_adapter remove_adapter)) {
+    make_method(
+        $method,
+        sub {
+            my $class   = shift;
+            my $manager = $Log::Any->manager;
+            $manager->Log::Any::Manager::Full::upgrade_to_full();
+            return $manager->$method(@_);
+        }
+    );
+}
+
 1;
 
 __END__

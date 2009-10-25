@@ -3,18 +3,21 @@ use strict;
 use warnings;
 use Carp qw(croak);
 use Log::Any::Adapter::Null;
-use Log::Any::Util qw(require_dynamic);
+use Log::Any::Adapter::Util qw(require_dynamic);
 use Scope::Guard;
 use base qw(Log::Any::Manager::Base);
 
-sub upgrade_to_full { }
-
-sub initialize_full {
+sub upgrade_to_full {
     my ($self) = @_;
-    my $null_entry = $self->_new_entry( qr/.*/, 'Log::Any::Adapter::Null', {} );
-    $self->{entries} = [$null_entry];
-    foreach my $key ( keys( %{ $self->{category_cache} } ) ) {
-        $self->{category_cache}->{$key}->{entry} = $null_entry;
+
+    if (!$self->{upgraded_to_full}) {
+        bless( $self, __PACKAGE__ );
+        $self->{upgraded_to_full} = 1;
+        my $null_entry = $self->_new_entry( qr/.*/, 'Log::Any::Adapter::Null', {} );
+        $self->{entries} = [$null_entry];
+        foreach my $key ( keys( %{ $self->{category_cache} } ) ) {
+            $self->{category_cache}->{$key}->{entry} = $null_entry;
+        }
     }
 }
 
