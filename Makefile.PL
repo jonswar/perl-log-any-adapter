@@ -1,8 +1,8 @@
 use inc::Module::Install;
 
-name 'Log-Any';
+name 'Log-Any-Adapter';
 abstract 'Log anywhere';
-all_from 'lib/Log/Any.pm';
+all_from 'lib/Log/Any/Adapter.pm';
 author 'Jonathan Swartz <swartz@pobox.com>';
 
 perl_version '5.006';
