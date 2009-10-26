@@ -53,7 +53,7 @@ sub _new_adapter_for_entry {
       ->new( %{ $entry->{adapter_params} }, category => $category );
 }
 
-sub set_adapter {
+sub set {
     my $self = shift;
     my $options;
     if ( ref( $_[0] ) eq 'HASH' ) {
@@ -83,21 +83,21 @@ sub set_adapter {
     my $entry = $self->_new_entry( $pattern, $adapter_class, \%adapter_params );
     unshift( @{ $self->{entries} }, $entry );
 
-    $self->reselect_matching_adapters($pattern);
+    $self->_reselect_matching_adapters($pattern);
 
     if ( my $lex_ref = $options->{lexically} ) {
-        $$lex_ref = Scope::Guard->new( sub { $self->remove_adapter($entry) } );
+        $$lex_ref = Scope::Guard->new( sub { $self->remove($entry) } );
     }
 
     return $entry;
 }
 
-sub remove_adapter {
+sub remove {
     my ( $self, $entry ) = @_;
 
     my $pattern = $entry->{pattern};
     $self->{entries} = [ grep { $_ ne $entry } @{ $self->{entries} } ];
-    $self->reselect_matching_adapters($pattern);
+    $self->_reselect_matching_adapters($pattern);
 }
 
 sub _new_entry {
@@ -110,7 +110,7 @@ sub _new_entry {
     };
 }
 
-sub reselect_matching_adapters {
+sub _reselect_matching_adapters {
     my ( $self, $pattern ) = @_;
 
     # Reselect adapter for each category matching $pattern

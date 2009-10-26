@@ -1,5 +1,6 @@
 #!perl
 use Test::More tests => 34;
+use Log::Any::Adapter;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
 use warnings;
@@ -39,7 +40,7 @@ isa_ok( $Bar::log, $nullclass, 'Bar::log before set' );
 isa_ok( $Baz::log, $nullclass, 'Baz::log before set' );
 isa_ok( $main_log, $nullclass, 'main_log before set' );
 
-my $entry = Log::Any->set_adapter( { category => qr/Foo|Bar/ }, "+$memclass" );
+my $entry = Log::Any::Adapter->set( { category => qr/Foo|Bar/ }, "+$memclass" );
 
 isa_ok( $Foo::log, $memclass,  'Foo::log after first set' );
 isa_ok( $Bar::log, $memclass,  'Bar::log after first set' );
@@ -47,7 +48,7 @@ isa_ok( $Baz::log, $nullclass, 'Baz::log after first set' );
 isa_ok( $main_log, $nullclass, 'main_log after first set' );
 
 my $entry2 =
-  Log::Any->set_adapter( { category => qr/Baz|main/ }, "+$memclass" );
+  Log::Any::Adapter->set( { category => qr/Baz|main/ }, "+$memclass" );
 
 isa_ok( $Foo::log, $memclass, 'Foo::log after second set' );
 isa_ok( $Bar::log, $memclass, 'Bar::log after second set' );
@@ -87,14 +88,14 @@ cmp_deeply(
     'main log appeared in memory'
 );
 
-Log::Any->remove_adapter($entry);
+Log::Any::Adapter->remove($entry);
 
 isa_ok( $Foo::log, $nullclass, 'Foo::log' );
 isa_ok( $Bar::log, $nullclass, 'Bar::log' );
 isa_ok( $Baz::log, $memclass,  'Baz::log' );
 isa_ok( $main_log, $memclass,  'main_log' );
 
-Log::Any->remove_adapter($entry2);
+Log::Any::Adapter->remove($entry2);
 
 isa_ok( $Foo::log, $nullclass, 'Foo::log' );
 isa_ok( $Bar::log, $nullclass, 'Bar::log' );
@@ -102,7 +103,7 @@ isa_ok( $Baz::log, $nullclass, 'Baz::log' );
 isa_ok( $main_log, $nullclass, 'main_log' );
 
 {
-    Log::Any->set_adapter( { category => 'Foo', lexically => \my $lex }, "+$memclass" );
+    Log::Any::Adapter->set( { category => 'Foo', lexically => \my $lex }, "+$memclass" );
     isa_ok( $Foo::log, $memclass, 'Foo::log in lexical scope' );
 }
 isa_ok( $Foo::log, $nullclass, 'Foo::log outside lexical scope' );

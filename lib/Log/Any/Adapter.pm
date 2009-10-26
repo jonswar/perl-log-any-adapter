@@ -1,13 +1,16 @@
 package Log::Any::Adapter;
+use Log::Any;
+use Log::Any::Manager::Full;
+use Log::Any::Util qw(make_method);
 use strict;
 use warnings;
 
-foreach my $method (qw(set_adapter remove_adapter)) {
+foreach my $method (qw(set remove)) {
     make_method(
         $method,
         sub {
             my $class   = shift;
-            my $manager = $Log::Any->manager;
+            my $manager = Log::Any->manager;
             $manager->Log::Any::Manager::Full::upgrade_to_full();
             return $manager->$method(@_);
         }
@@ -22,35 +25,35 @@ __END__
 
 =head1 NAME
 
-Log-Any-Adapter -- Tell Log::Any where to send its logs
+Log::Any::Adapter -- Tell Log::Any where to send its logs
 
 =head1 SYNOPSIS
 
-    use Log::Any;
+    use Log::Any::Adapter;
 
     # Use Log::Log4perl for all categories
     #
     Log::Log4perl::init('/etc/log4perl.conf');
-    Log::Any->set_adapter('Log4perl');
+    Log::Any::Adapter->set('Log4perl');
 
     # Use Log::Dispatch for Foo::Baz
     #
     use Log::Dispatch;
     my $log = Log::Dispatch->new(outputs => [[ ... ]]);
-    Log::Any->set_adapter( { category => 'Foo::Baz' },
+    Log::Any::Adapter->set( { category => 'Foo::Baz' },
         'Dispatch', dispatcher => $log );
 
     # Use Log::Dispatch::Config for Foo::Baz and its subcategories
     #
     use Log::Dispatch::Config;
     Log::Dispatch::Config->configure('/path/to/log.conf');
-    Log::Any->set_adapter(
+    Log::Any::Adapter->set(
         { category => qr/^Foo::Baz/ },
         'Dispatch', dispatcher => Log::Dispatch::Config->instance() );
 
     # Use your own adapter for all categories
     #
-    Log::Any->set_adapter('+My::Log::Any::Adapter', ...);
+    Log::Any::Adapter->set('+My::Log::Any::Adapter', ...);
 
 =head1 DESCRIPTION
 
@@ -90,7 +93,7 @@ information on the latter.
 
 =over
 
-=item Log::Any->set_adapter ([options, ]adapter_name, adapter_params...)
+=item Log::Any::Adapter->set ([options, ]adapter_name, adapter_params...)
 
 This method sets the adapter to use for all log categories, or for a particular
 set of categories.
@@ -100,7 +103,7 @@ I<adapter_name> is the name of an adapter. It is automatically prepended with
 prefix it with a "+". e.g.
 
     # Use My::Adapter class
-    Log::Any->set_adapter('+My::Adapter', arg => $value);
+    Log::Any::Adapter->set('+My::Adapter', arg => $value);
 
 I<adapter_params> are passed along to the adapter constructor. See the
 documentation for the individual adapter classes for more information.
@@ -121,7 +124,7 @@ A reference to a lexical variable. When the variable goes out of scope, the
 adapter setting will be removed. e.g.
 
     {
-        Log::Any->set_adapter({lexically => \my $lex}, ...);
+        Log::Any::Adapter->set({lexically => \my $lex}, ...);
 
         # in effect here
         ...
@@ -130,18 +133,17 @@ adapter setting will be removed. e.g.
 
 =back
 
-C<set_adapter> returns an entry object, which can be passed to
-C<remove_adapter>.
+C<set> returns an entry object, which can be passed to C<remove>.
 
-=item Log::Any->remove_adapter (entry)
+=item Log::Any::Adapter->remove (entry)
 
-Remove an I<entry> previously returned by C<set_adapter>.
+Remove an I<entry> previously returned by C<set>.
 
 =back
 
 =head1 MULTIPLE ADAPTER SETTINGS
 
-C<Log::Any> maintains a stack of entries created via C<set_adapter>.
+C<Log::Any> maintains a stack of entries created via C<set>.
 
 When you get a logger for a particular category, C<Log::Any> will work its way
 down the stack and use the first matching entry.
@@ -153,7 +155,7 @@ created will automatically adjust to the new stack. For example:
     $log->error("aiggh!");   # this goes nowhere
     ...
     {
-        Log::Any->set_adapter({ local => \my $lex }, 'Log4perl');
+        Log::Any::Adapter->set({ local => \my $lex }, 'Log4perl');
         $log->error("aiggh!");   # this goes to log4perl
         ...
     }
