@@ -10,10 +10,11 @@ use base qw(Log::Any::Manager::Base);
 sub upgrade_to_full {
     my ($self) = @_;
 
-    if (!$self->{upgraded_to_full}) {
+    if ( !$self->{upgraded_to_full} ) {
         bless( $self, __PACKAGE__ );
         $self->{upgraded_to_full} = 1;
-        my $null_entry = $self->_new_entry( qr/.*/, 'Log::Any::Adapter::Null', {} );
+        my $null_entry =
+          $self->_new_entry( qr/.*/, 'Log::Any::Adapter::Null', {} );
         $self->{entries} = [$null_entry];
         foreach my $key ( keys( %{ $self->{category_cache} } ) ) {
             $self->{category_cache}->{$key}->{entry} = $null_entry;
