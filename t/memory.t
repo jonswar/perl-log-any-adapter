@@ -103,7 +103,8 @@ isa_ok( $Baz::log, $nullclass, 'Baz::log' );
 isa_ok( $main_log, $nullclass, 'main_log' );
 
 {
-    Log::Any::Adapter->set( { category => 'Foo', lexically => \my $lex }, "+$memclass" );
+    Log::Any::Adapter->set( { category => 'Foo', lexically => \my $lex },
+        "+$memclass" );
     isa_ok( $Foo::log, $memclass, 'Foo::log in lexical scope' );
 }
 isa_ok( $Foo::log, $nullclass, 'Foo::log outside lexical scope' );

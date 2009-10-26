@@ -5,8 +5,8 @@ use strict;
 use warnings;
 
 eval { Log::Any::Adapter->set('Blah') };
-like($@, qr{Can't locate Log/Any/Adapter/Blah}, "adapter = Blah");
+like( $@, qr{Can't locate Log/Any/Adapter/Blah}, "adapter = Blah" );
 eval { Log::Any::Adapter->set('+My::Adapter::Blah') };
-like($@, qr{Can't locate My/Adapter/Blah}, "adapter = +My::Adapter::Blah");
+like( $@, qr{Can't locate My/Adapter/Blah}, "adapter = +My::Adapter::Blah" );
 eval { Log::Any::Adapter->set('') };
-like($@, qr{expected adapter name}, "adapter = ''");
+like( $@, qr{expected adapter name}, "adapter = ''" );
