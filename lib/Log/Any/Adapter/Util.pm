@@ -1,4 +1,5 @@
 package Log::Any::Adapter::Util;
+use Data::Dumper;
 use strict;
 use warnings;
 use base qw(Exporter);

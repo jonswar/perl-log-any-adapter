@@ -1,7 +1,7 @@
 package Log::Any::Adapter;
 use Log::Any;
 use Log::Any::Manager;
-use Log::Any::Util qw(make_method);
+use Log::Any::Adapter::Util qw(make_method);
 use strict;
 use warnings;
 

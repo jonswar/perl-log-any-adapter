@@ -10,7 +10,7 @@ The adapter module:
    package Log::Any::Adapter::YAL;
    use strict;
    use warnings;
-   use Log::Any::Util qw(make_method);
+   use Log::Any::Adapter::Util qw(make_method);
    use base qw(Log::Any::Adapter::Base);
    
    # Optionally initialize object
