@@ -1,28 +1,33 @@
-package Log::Any::Manager::Full;
+package Log::Any::Manager;
 use strict;
 use warnings;
 use Carp qw(croak);
-use Log::Any::Adapter::Null;
 use Log::Any::Adapter::Util qw(require_dynamic);
 use Scope::Guard;
-use base qw(Log::Any::Manager::Base);
 
-sub upgrade_to_full {
-    my ($self) = @_;
+sub new {
+    my $class = shift;
+    my $self = { entries => [] };
+    bless $self, $class;
 
-    if ( !$self->{upgraded_to_full} ) {
-        bless( $self, __PACKAGE__ );
-        $self->{upgraded_to_full} = 1;
-        my $null_entry =
-          $self->_new_entry( qr/.*/, 'Log::Any::Adapter::Null', {} );
-        $self->{entries} = [$null_entry];
-        foreach my $key ( keys( %{ $self->{category_cache} } ) ) {
-            $self->{category_cache}->{$key}->{entry} = $null_entry;
-        }
-    }
+    # Create the initial Null entry (this is always present)
+    #
+    $self->set('Null');
+    my $null_entry = $self->{entries}->[0];
+
+    # Start our category cache with any null adapters already returned from raw Log::Any
+    #
+    $self->{category_cache} = {
+        map {
+            $_ =>
+              ( adapter => $Log::Any::NullAdapters{$_}, entry => $null_entry )
+          } keys(%Log::Any::NullAdapters)
+    };
+
+    return $self;
 }
 
-sub _get_logger_for_category {
+sub get_logger {
     my ( $self, $category ) = @_;
 
     # Create a new adapter for this category if it is not already in cache
@@ -97,6 +102,9 @@ sub remove {
     my ( $self, $entry ) = @_;
 
     my $pattern = $entry->{pattern};
+    my $size    = scalar( @{ $self->{entries} } );
+    die "cannot remove bottom entry"
+      if $entry eq $self->{entries}->[ $size - 1 ];
     $self->{entries} = [ grep { $_ ne $entry } @{ $self->{entries} } ];
     $self->_reselect_matching_adapters($pattern);
 }

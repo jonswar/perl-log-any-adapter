@@ -1,17 +1,21 @@
 package Log::Any::Adapter;
 use Log::Any;
-use Log::Any::Manager::Full;
+use Log::Any::Manager;
 use Log::Any::Util qw(make_method);
 use strict;
 use warnings;
 
-foreach my $method (qw(set remove)) {
+# Checked by Log::Any to see if get_logger should be forwarded here
+#
+our $Initialized = 1;
+
+my $manager = Log::Any::Manager->new();
+
+foreach my $method (qw(get_logger set remove)) {
     make_method(
         $method,
         sub {
-            my $class   = shift;
-            my $manager = Log::Any->manager;
-            $manager->Log::Any::Manager::Full::upgrade_to_full();
+            my $class = shift;
             return $manager->$method(@_);
         }
     );

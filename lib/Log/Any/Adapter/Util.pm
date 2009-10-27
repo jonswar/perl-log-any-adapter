@@ -1,11 +1,12 @@
 package Log::Any::Adapter::Util;
-use Log::Any::Util qw(dump_one_line);
 use strict;
 use warnings;
 use base qw(Exporter);
 
 our @EXPORT_OK = qw(
   cmp_deeply
+  dump_one_line
+  make_method
   read_file
   require_dynamic
 );
@@ -15,6 +16,21 @@ sub cmp_deeply {
 
     my $tb = Test::Builder->new();
     $tb->is_eq( dump_one_line($ref1), dump_one_line($ref2), $name );
+}
+
+sub dump_one_line {
+    my ($value) = @_;
+
+    return Data::Dumper->new( [$value] )->Indent(0)->Sortkeys(1)->Quotekeys(0)
+      ->Terse(1)->Dump();
+}
+
+sub make_method {
+    my ( $method, $code, $pkg ) = @_;
+
+    $pkg ||= caller();
+    no strict 'refs';
+    *{ $pkg . "::$method" } = $code;
 }
 
 sub read_file {
