@@ -39,7 +39,7 @@ and the application:
 
 =head1 DESCRIPTION
 
-This document describes how to implement a new Log;:Any adapter.
+This document describes how to implement a new Log::Any adapter.
 
 The easiest way to start is to look at the source of existing adapters, such as
 L<Log::Any::Adapter::Log4perl|Log::Any::Adapter::Log4perl> and
