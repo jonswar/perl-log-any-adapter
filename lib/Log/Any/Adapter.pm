@@ -1,4 +1,5 @@
 package Log::Any::Adapter;
+use 5.006;
 use Log::Any;
 use Log::Any::Manager;
 use Log::Any::Adapter::Util qw(make_method);
