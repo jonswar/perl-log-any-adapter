@@ -4,6 +4,8 @@ Revision history for Log-Any
 
 0.02  Oct 27, 2009
 
+- Fix when loggers created before Log::Any::Adapter initialized
+
 0.01  Oct 27, 2009
 
 - Initial version
