@@ -19,8 +19,12 @@ sub new {
     #
     $self->{category_cache} = {
         map {
-            $_ =>
-              ( adapter => $Log::Any::NullAdapters{$_}, entry => $null_entry )
+            (
+                $_ => {
+                    adapter => $Log::Any::NullAdapters{$_},
+                    entry   => $null_entry
+                }
+              )
           } keys(%Log::Any::NullAdapters)
     };
 

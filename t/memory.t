@@ -1,6 +1,5 @@
 #!perl
 use Test::More tests => 34;
-use Log::Any::Adapter;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
 use warnings;
@@ -25,6 +24,8 @@ use warnings;
         $log->info($text) if $log->is_info();
     }
 }
+
+require Log::Any::Adapter;
 
 $Baz::log = Log::Any->get_logger( category => 'Baz' );
 my $main_log = Log::Any->get_logger();
