@@ -1,8 +1,9 @@
 package Log::Any::Adapter::Base;
 use Log::Any;
-use Log::Any::Adapter::Util qw(make_method dump_one_line);
+use Log::Any::Adapter::Util qw(make_method);
 use strict;
 use warnings;
+use base qw(Log::Any::Adapter::Core);    # In Log-Any distribution
 
 sub new {
     my $class = shift;
@@ -20,32 +21,6 @@ sub delegate_method_to_slot {
     make_method( $method,
         sub { my $self = shift; return $self->{$slot}->$adapter_method(@_) },
         $class );
-}
-
-# Forward 'warn' to 'warning', 'is_warn' to 'is_warning', and so on for all aliases
-#
-my %aliases = Log::Any->log_level_aliases;
-while ( my ( $alias, $realname ) = each(%aliases) ) {
-    make_method( $alias, sub { my $self = shift; $self->$realname(@_) } );
-    my $is_alias    = "is_$alias";
-    my $is_realname = "is_$realname";
-    make_method( $is_alias, sub { my $self = shift; $self->$is_realname(@_) } );
-}
-
-# Add printf-style versions of all logging methods and aliases - e.g. errorf, debugf
-#
-foreach my $name ( Log::Any->logging_methods, keys(%aliases) ) {
-    my $methodf = $name . "f";
-    my $method = $aliases{$name} || $name;
-    make_method(
-        $methodf,
-        sub {
-            my ( $self, $format, @params ) = @_;
-            my @new_params = map { ref($_) ? dump_one_line($_) : $_ } @params;
-            my $new_message = sprintf( $format, @new_params );
-            $self->$method($new_message);
-        }
-    );
 }
 
 1;
