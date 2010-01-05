@@ -1,8 +1,10 @@
-Revision history for Log-Any
+Revision history for Log-Any-Adapter
 
 ** denotes an incompatible change
 
 0.03  Oct 27, 2009
+
+- depend on Log::Any::Adapter::Core in Log-Any distribution
 
 0.02  Oct 27, 2009
 
