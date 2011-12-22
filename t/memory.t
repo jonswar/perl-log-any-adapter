@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 {
-
     package Foo;
     use Log::Any qw($log);
 
@@ -15,7 +14,6 @@ use warnings;
     }
 }
 {
-
     package Bar;
     use Log::Any qw($log);
 

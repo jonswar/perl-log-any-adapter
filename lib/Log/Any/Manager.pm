@@ -2,6 +2,7 @@ package Log::Any::Manager;
 use strict;
 use warnings;
 use Carp qw(croak);
+use Devel::GlobalDestruction;
 use Log::Any::Adapter::Util qw(require_dynamic);
 use Scope::Guard;
 
@@ -96,7 +97,8 @@ sub set {
     $self->_reselect_matching_adapters($pattern);
 
     if ( my $lex_ref = $options->{lexically} ) {
-        $$lex_ref = Scope::Guard->new( sub { $self->remove($entry) } );
+        $$lex_ref = Scope::Guard->new(
+            sub { $self->remove($entry) if !in_global_destruction } );
     }
 
     return $entry;
@@ -125,6 +127,8 @@ sub _new_entry {
 
 sub _reselect_matching_adapters {
     my ( $self, $pattern ) = @_;
+
+    return if in_global_destruction;
 
     # Reselect adapter for each category matching $pattern
     #
