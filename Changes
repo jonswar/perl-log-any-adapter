@@ -2,7 +2,9 @@ Revision history for Log-Any-Adapter
 
 ** denotes an incompatible change
 
-0.04  Jan 5, 2010
+0.04  Dec 21, 2011
+
+- don't try to clean up entries during global destruction
 
 0.03  Jan 5, 2010
 
