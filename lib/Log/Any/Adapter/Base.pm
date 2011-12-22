@@ -39,15 +39,3 @@ This is the base class for Log::Any adapters. See
 L<Log::Any::Adapter::Development|Log::Any::Adapter::Development> for
 information on developing Log::Any adapters.
 
-=head1 AUTHOR
-
-Jonathan Swartz
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright (C) 2009 Jonathan Swartz, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it under
-the same terms as Perl itself.
-
-=cut

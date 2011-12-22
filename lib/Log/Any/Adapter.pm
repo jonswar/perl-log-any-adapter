@@ -172,19 +172,3 @@ created will automatically adjust to the new stack. For example:
 
 L<Log::Any|Log::Any>
 
-=head1 AUTHOR
-
-Jonathan Swartz
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright (C) 2009 Jonathan Swartz.
-
-Log::Any is provided "as is" and without any express or implied warranties,
-including, without limitation, the implied warranties of merchantibility and
-fitness for a particular purpose.
-
-This program is free software; you canredistribute it and/or modify it under
-the same terms as Perl itself.
-
-=cut
