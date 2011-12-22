@@ -4,6 +4,8 @@ Revision history for Log-Any-Adapter
 
 0.05  Dec 21, 2011
 
+- remove release directory
+
 0.04  Dec 21, 2011
 
 - don't try to clean up entries during global destruction
