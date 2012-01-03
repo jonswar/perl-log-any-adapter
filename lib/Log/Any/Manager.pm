@@ -4,7 +4,7 @@ use warnings;
 use Carp qw(croak);
 use Devel::GlobalDestruction;
 use Log::Any::Adapter::Util qw(require_dynamic);
-use Scope::Guard;
+use Guard;
 
 sub new {
     my $class = shift;
@@ -97,8 +97,8 @@ sub set {
     $self->_reselect_matching_adapters($pattern);
 
     if ( my $lex_ref = $options->{lexically} ) {
-        $$lex_ref = Scope::Guard->new(
-            sub { $self->remove($entry) if !in_global_destruction } );
+        $$lex_ref =
+          Guard::guard { $self->remove($entry) if !in_global_destruction };
     }
 
     return $entry;
