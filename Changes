@@ -4,6 +4,8 @@ Revision history for Log-Any-Adapter
 
 0.07  Jan 3, 2012
 
+- add Carp, Log::Any as prereqs
+
 0.06  Jan 3, 2012
 
 - switch from Scope::Guard to Guard, require Guard in deps
