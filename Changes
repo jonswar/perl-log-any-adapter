@@ -2,7 +2,7 @@ Revision history for Log-Any-Adapter
 
 ** denotes an incompatible change
 
-0.07  Jan 3, 2012
+0.07  Feb 22, 2012
 
 - add Carp, Log::Any as prereqs
 
