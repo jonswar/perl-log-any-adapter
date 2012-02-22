@@ -6,8 +6,6 @@ use Log::Any::Adapter::Util qw(make_method);
 use strict;
 use warnings;
 
-our $VERSION = '0.04';
-
 # Checked by Log::Any to see if get_logger should be forwarded here
 #
 our $Initialized = 1;
