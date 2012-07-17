@@ -1,5 +1,5 @@
 #!perl
-use Test::More tests => 1;
+use Test::More;
 use Log::Any::Adapter;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
@@ -26,3 +26,5 @@ cmp_deeply(
     ],
     'message was formatted'
 );
+
+done_testing;

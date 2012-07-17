@@ -1,5 +1,5 @@
 #!perl
-use Test::More tests => 34;
+use Test::More;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
 use warnings;
@@ -107,3 +107,5 @@ isa_ok( $main_log, $nullclass, 'main_log' );
     isa_ok( $Foo::log, $memclass, 'Foo::log in lexical scope' );
 }
 isa_ok( $Foo::log, $nullclass, 'Foo::log outside lexical scope' );
+
+done_testing;

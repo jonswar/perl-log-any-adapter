@@ -131,8 +131,8 @@ your subclass:
 
 These methods log a message at the specified level.
 
-To help generate these methods programmatically, you can get a list of the
-method names with
+To help generate these methods programmatically, you can get a list of the sub
+names with #__METHOD
 
     Log::Any->logging_methods
 
@@ -155,8 +155,8 @@ method names with
 These methods return a boolean indicating whether the specified level is
 active.
 
-To help generate these methods programmatically, you can get a list of the
-method names with
+To help generate these methods programmatically, you can get a list of the sub
+names with #__METHOD
 
     Log::Any->detection_methods
 

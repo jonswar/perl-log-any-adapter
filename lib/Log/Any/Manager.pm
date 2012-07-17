@@ -26,7 +26,7 @@ sub new {
                     entry   => $null_entry
                 }
               )
-          } keys(%Log::Any::NullAdapters)
+        } keys(%Log::Any::NullAdapters)
     };
 
     return $self;
