@@ -22,6 +22,11 @@ foreach my $method (qw(get_logger set remove)) {
     );
 }
 
+sub import {
+    my $pkg = shift;
+    pkg->set(@_) if (@_);
+}
+
 1;
 
 __END__
@@ -34,7 +39,11 @@ Log::Any::Adapter -- Tell Log::Any where to send its logs
 
 =head1 SYNOPSIS
 
-    use Log::Any::Adapter;
+    # Log to a file, or stdout, or stderr for all categories
+    #
+    use Log::Any::Adapter ('File', '/path/to/file.log');
+    use Log::Any::Adapter ('Stdout');
+    use Log::Any::Adapter ('Stderr');
 
     # Use Log::Log4perl for all categories
     #
@@ -74,18 +83,48 @@ auto-loaded when you call one of the methods below.
 In order to use a logging mechanism with C<Log::Any>, there needs to be an
 adapter class for it. Typically this is named Log::Any::Adapter::I<something>.
 
+=head2 Adapters in this distribution
+
+Three basic adapters come with this distribution -- L<File>, L<Stdout> and
+L<Stderr>:
+
+    use Log::Any::Adapter ('File', '/path/to/file.log');
+    use Log::Any::Adapter ('Stdout');
+    use Log::Any::Adapter ('Stderr');
+
+    # or
+
+    use Log::Any::Adapter;
+    Log::Any::Adapter->set('File', '/path/to/file.log');
+    Log::Any::Adapter->set('Stdout');
+    Log::Any::Adapter->set('Stderr');
+
+All of them output a simple log line with the date and message to the specified
+destination, e.g.
+
+    [Tue Jul 17 00:17:52 2012] Log message
+
+=head2 Adapters on CPAN
+
 The following adapters are available on CPAN as of this writing:
 
 =over
 
 =item *
 
-L<Log::Any::Adapter::Log4perl|Log::Any::Adapter::Log4perl> - work with log4perl
+L<Log::Any::Adapter::Log4perl|Log::Any::Adapter::Log4perl> - work with
+L<Log::Log4perl|Log::Log4perl>
 
 =item *
 
 L<Log::Any::Adapter::Dispatch|Log::Any::Adapter::Dispatch> - work with
-Log::Dispatch or Log::Dispatch::Config
+L<Log::Dispatch|Log::Dispatch> or
+L<Log::Dispatch::Config|Log::Dispatch::Config>
+
+=item *
+
+L<Log::Any::Adapter::Tiny|Log::Any::Adapter::Tiny> - work with
+L<Log::Tiny|Log::Tiny>
 
 =back
 
@@ -140,6 +179,11 @@ adapter setting will be removed. e.g.
 
 C<set> returns an entry object, which can be passed to C<remove>.
 
+=item use Log::Any::Adapter (...)
+
+If you pass arguments to C<use Log::Any::Adapter>, it calls C<<
+Log::Any::Adapter->set >> with those arguments.
+
 =item Log::Any::Adapter->remove (entry)
 
 Remove an I<entry> previously returned by C<set>.
@@ -160,7 +204,7 @@ created will automatically adjust to the new stack. For example:
     $log->error("aiggh!");   # this goes nowhere
     ...
     {
-        Log::Any::Adapter->set({ local => \my $lex }, 'Log4perl');
+        Log::Any::Adapter->set({ lexically => \my $lex }, 'Log4perl');
         $log->error("aiggh!");   # this goes to log4perl
         ...
     }
