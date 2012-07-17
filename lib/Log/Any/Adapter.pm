@@ -24,7 +24,7 @@ foreach my $method (qw(get_logger set remove)) {
 
 sub import {
     my $pkg = shift;
-    pkg->set(@_) if (@_);
+    $pkg->set(@_) if (@_);
 }
 
 1;
