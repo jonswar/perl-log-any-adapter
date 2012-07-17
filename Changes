@@ -2,7 +2,9 @@ Revision history for Log-Any-Adapter
 
 ** denotes an incompatible change
 
-0.08  Feb 22, 2012
+0.08  Jul 17, 2012
+
+- allow set() params to be passed to 'use Log::Any'
 
 0.07  Feb 22, 2012
 
