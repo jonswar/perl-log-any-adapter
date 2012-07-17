@@ -4,7 +4,10 @@ Revision history for Log-Any-Adapter
 
 0.08  Jul 17, 2012
 
-- allow set() params to be passed to 'use Log::Any'
+- add simple built-in File, Stdout, and Stderr adapters, mainly to provide
+  easy examples of usage that don't require additional packages
+- allow set() params to be passed to 'use Log::Any::Adapter'
+- allow adapter constructor to take any list of params, not necessarily a hash
 
 0.07  Feb 22, 2012
 
