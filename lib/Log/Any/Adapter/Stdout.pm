@@ -6,8 +6,7 @@ use base qw(Log::Any::Adapter::FileScreenBase);
 __PACKAGE__->make_logging_methods(
     sub {
         my ( $self, $text ) = @_;
-        my $msg = sprintf( "[%s] %s\n", scalar(localtime), $text );
-        print $msg;
+        print STDOUT "$text\n";
     }
 );
 
@@ -33,6 +32,6 @@ Log::Any::Adapter::Stdout
 
 =head1 DESCRIPTION
 
-This simple built-in L<Log::Any|Log::Any> adapter logs each message to STDOUT,
-with a datestamp prefix. Category and log level are ignored.
+This simple built-in L<Log::Any|Log::Any> adapter logs each message to STDOUT
+with a newline appended. Category and log level are ignored.
 

@@ -47,6 +47,6 @@ Log::Any::Adapter::File
 =head1 DESCRIPTION
 
 This simple built-in L<Log::Any|Log::Any> adapter logs each message to the
-specified file, with a datestamp prefix. The file is opened for append with
-autoflush on. Category and log level are ignored.
+specified file, with a datestamp prefix and newline appended. The file is
+opened for append with autoflush on. Category and log level are ignored.
 

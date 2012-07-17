@@ -22,14 +22,14 @@ require Log::Any::Adapter;
     Log::Any::Adapter->set('Stdout');
     my $log = Log::Any->get_logger();
     like( capture_stdout( sub { $log->debug("to stdout") } ),
-        qr/^\[.*\] to stdout\n$/, "stdout" );
+        qr/^to stdout\n$/, "stdout" );
 }
 
 {
     Log::Any::Adapter->set('Stderr');
     my $log = Log::Any->get_logger();
     like( capture_stderr( sub { $log->debug("to stderr") } ),
-        qr/^\[.*\] to stderr\n$/, "stderr" );
+        qr/^to stderr\n$/, "stderr" );
 }
 
 done_testing;

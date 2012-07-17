@@ -8,7 +8,7 @@ use warnings;
 {
     my $log = Log::Any->get_logger();
     like( capture_stdout( sub { $log->debug("to stdout") } ),
-        qr/^\[.*\] to stdout\n$/, "stdout" );
+        qr/^to stdout\n$/, "stdout" );
 }
 
 done_testing;
