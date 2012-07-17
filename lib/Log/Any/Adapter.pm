@@ -106,30 +106,30 @@ destination, e.g.
 
 =head2 Adapters on CPAN
 
-The following adapters are available on CPAN as of this writing:
+A sampling of adapters available on CPAN as of this writing:
 
 =over
 
 =item *
 
-L<Log::Any::Adapter::Log4perl|Log::Any::Adapter::Log4perl> - work with
-L<Log::Log4perl|Log::Log4perl>
+L<Log::Any::Adapter::Log4perl|Log::Any::Adapter::Log4perl>
 
 =item *
 
-L<Log::Any::Adapter::Dispatch|Log::Any::Adapter::Dispatch> - work with
-L<Log::Dispatch|Log::Dispatch> or
-L<Log::Dispatch::Config|Log::Dispatch::Config>
+L<Log::Any::Adapter::Dispatch|Log::Any::Adapter::Dispatch>
 
 =item *
 
-L<Log::Any::Adapter::Tiny|Log::Any::Adapter::Tiny> - work with
-L<Log::Tiny|Log::Tiny>
+L<Log::Any::Adapter::FileHandle|Log::Any::Adapter::FileHandle>
+
+=item *
+
+L<Log::Any::Adapter::Syslog|Log::Any::Adapter::Syslog>
 
 =back
 
-You may also find other adapters on CPAN by searching for "Log::Any::Adapter",
-or create your own adapter. See
+You may find other adapters on CPAN by searching for "Log::Any::Adapter", or
+create your own adapter. See
 L<Log::Any::Adapter::Development|Log::Any::Adapter::Development> for more
 information on the latter.
 

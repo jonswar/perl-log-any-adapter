@@ -3,6 +3,11 @@ use strict;
 use warnings;
 use base qw(Log::Any::Adapter::FileScreenBase);
 
+sub new {
+    my ( $class, $file ) = @_;
+    return $class->SUPER::new( file => $file );
+}
+
 sub init {
     my $self = shift;
     my $file = $self->{file};
@@ -20,3 +25,28 @@ __PACKAGE__->make_logging_methods(
 );
 
 1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+Log::Any::Adapter::File
+
+=head1 SYNOPSIS
+
+    use Log::Any::Adapter ('File', '/path/to/file.log');
+
+    # or
+
+    use Log::Any::Adapter;
+    ...
+    Log::Any::Adapter->set('File', '/path/to/file.log');
+
+=head1 DESCRIPTION
+
+This simple built-in L<Log::Any|Log::Any> adapter logs each message to the
+specified file, with a datestamp prefix. The file is opened for append with
+autoflush on. Category and log level are ignored.
+
