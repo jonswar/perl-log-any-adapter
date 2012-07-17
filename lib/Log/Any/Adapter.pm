@@ -99,10 +99,9 @@ L<Stderr>:
     Log::Any::Adapter->set('Stdout');
     Log::Any::Adapter->set('Stderr');
 
-All of them output a simple log line with the date and message to the specified
-destination, e.g.
-
-    [Tue Jul 17 00:17:52 2012] Log message
+All of them simply output the message and newline to the specified destination;
+a datestamp prefix is added in the C<File> case. For anything more complex
+you'll want to use a more robust adapter from CPAN.
 
 =head2 Adapters on CPAN
 
