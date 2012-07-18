@@ -1,38 +1,20 @@
-^bench
-^bin
-^cp\.yml
+^MANIFEST.SKIP$
+^NOTES
+^TODO
 ^data
 ^dist.ini
 ^docs
 ^git
-^inc/\.author
-^lib/Test
-^localcpan
-^misc
+^htdocs
 ^perlcriticrc
-^perltidyrc
 ^release
+^tidyall.ini
 ^tmp
-^wiki
-^README.DEVELOPERS
-^TODO
-^VERSION
+^weaver.ini
+^z-backup
 
-# pod2html files
-\.pm\.html
-
-# Backup files, etc.
 ~$
 (^|/)#
 (^|/)\.
 \.bak$
 \.tar\.gz$
-
-# SVN cruft
-^\.svn
-
-# MakeMaker cruft
-^Makefile$
-^Makefile.old$
-^blib
-^MANIFEST.SKIP$

@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/perl
 use Capture::Tiny qw(capture_stdout);
 use Test::More;
 use Log::Any::Adapter qw(Stdout);

@@ -1,8 +1,7 @@
-#!perl
+#!/usr/bin/perl
 use Test::More;
-use File::Slurp;
 use File::Temp qw(tempdir);
-use Log::Any::Adapter::Util qw(cmp_deeply);
+use Log::Any::Adapter::Util qw(cmp_deeply read_file);
 use Capture::Tiny qw(capture_stdout capture_stderr);
 use strict;
 use warnings;

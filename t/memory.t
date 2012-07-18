@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/perl
 use Test::More;
 use Log::Any::Adapter::Util qw(cmp_deeply);
 use strict;
