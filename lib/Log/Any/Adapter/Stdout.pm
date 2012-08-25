@@ -18,7 +18,7 @@ __END__
 
 =head1 NAME
 
-Log::Any::Adapter::Stdout
+Log::Any::Adapter::Stdout - Simple adapter for logging to STDOUT
 
 =head1 SYNOPSIS
 

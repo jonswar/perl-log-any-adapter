@@ -32,7 +32,7 @@ __END__
 
 =head1 NAME
 
-Log::Any::Adapter::File
+Log::Any::Adapter::File - Simple adapter for logging to files
 
 =head1 SYNOPSIS
 

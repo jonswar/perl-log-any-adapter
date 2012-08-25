@@ -31,7 +31,7 @@ __END__
 
 =head1 NAME
 
-Log::Any::Adapter::Base
+Log::Any::Adapter::Base - Base class for Log::Any adapters
 
 =head1 DESCRIPTION
 
