@@ -4,6 +4,8 @@ Revision history for Log-Any-Adapter
 
 0.09  Jul 17, 2012
 
+- add proper NAME sections to POD - RT #79216 (Gregor Herrmann)
+
 0.08  Jul 17, 2012
 
 - add simple built-in File, Stdout, and Stderr adapters, mainly to provide
