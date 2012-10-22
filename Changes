@@ -4,6 +4,8 @@ Revision history for Log-Any-Adapter
 
 0.10  Aug 25, 2012
 
+- Depend on Capture::Tiny 0.12 - RT #80287 (Andreas Koenig)
+
 0.09  Aug 25, 2012
 
 - add proper NAME sections to POD - RT #79216 (Gregor Herrmann)
