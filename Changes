@@ -2,7 +2,7 @@ Revision history for Log-Any-Adapter
 
 ** denotes an incompatible change
 
-0.10  Aug 25, 2012
+0.10  Oct 22, 2012
 
 - Depend on Capture::Tiny 0.12 - RT #80287 (Andreas Koenig)
 
