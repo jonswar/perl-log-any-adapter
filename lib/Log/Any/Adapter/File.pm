@@ -1,4 +1,5 @@
 package Log::Any::Adapter::File;
+use IO::File;
 use strict;
 use warnings;
 use base qw(Log::Any::Adapter::FileScreenBase);
