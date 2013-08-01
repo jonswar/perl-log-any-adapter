@@ -5,8 +5,10 @@ use warnings;
 use base qw(Log::Any::Adapter::FileScreenBase);
 
 sub new {
-    my ( $class, $file ) = @_;
-    return $class->SUPER::new( file => $file );
+    my $category = pop;
+    pop;
+    my ( $class, $file, $layer ) = @_;
+    return $class->SUPER::new( file => $file, layer => $layer // undef );
 }
 
 sub init {
@@ -15,6 +17,9 @@ sub init {
     open( $self->{fh}, ">>", $file )
       or die "cannot open '$file' for append: $!";
     $self->{fh}->autoflush(1);
+    if(defined $self->{layer}){
+        binmode( $self->{fh}, $self->{layer} );
+    }
 }
 
 __PACKAGE__->make_logging_methods(
@@ -37,13 +42,13 @@ Log::Any::Adapter::File - Simple adapter for logging to files
 
 =head1 SYNOPSIS
 
-    use Log::Any::Adapter ('File', '/path/to/file.log');
+    use Log::Any::Adapter ('File', '/path/to/file.log', ':utf8');
 
     # or
 
     use Log::Any::Adapter;
     ...
-    Log::Any::Adapter->set('File', '/path/to/file.log');
+    Log::Any::Adapter->set('File', '/path/to/file.log', ':utf8');
 
 =head1 DESCRIPTION
 
